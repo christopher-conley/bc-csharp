@@ -1,5 +1,17 @@
-# The Bouncy Castle Cryptography Library For .NET
-[![NuGet](https://img.shields.io/nuget/dt/BouncyCastle.Cryptography.svg)](https://www.nuget.org/packages/BouncyCastle.Cryptography) [![NuGet](https://img.shields.io/nuget/vpre/BouncyCastle.Cryptography.svg)](https://www.nuget.org/packages/BouncyCastle.Cryptography)
+# The Bouncy Castle Cryptography Library (with FIPS) For .NET
+
+## Important Note: The purpose of this fork
+
+This repo contains sources tracking the current version of the Bouncy Castle Cryptography library (available in the non-default [`master`](https://github.com/christopher-conley/bc-csharp/tree/master) branch), as well as the FIPS version and an accompanying `csproj` file in the [`fips`](https://github.com/christopher-conley/bc-csharp/tree/HEAD/fips) subdirectory.
+
+For some reason, the FIPS sources are not tracked (or available at all) in [the official BouncyCastle git repository](https://github.com/bcgit/bc-csharp), but they *are* available at [their website](https://www.bouncycastle.org/) if you look hard enough and sacrifice the correct number of goats. The XML documentation, debug files, and source code obtainable on their website comes in several disparate zip files and contains no git history. The purpose of this fork is to make those sources easily-accessible and compilable. These sources were last retrieved on 2025-06-19 for the latest-available version (`1.0.2`) of the Bouncy Castle Cryptography library.
+
+The FIPS source code has been consolidated/repatriated into a single source directory tree ([`fips`](https://github.com/christopher-conley/bc-csharp/tree/HEAD/fips)), has been given its own independent Project file (`BouncyCastle.Crypto.FIPS`) within the main solution file, and is configured to produce a single assembly instead of several independent assemblies; the original source code itself, though, remains completely unaltered. The source files used to construct the [`fips`](https://github.com/christopher-conley/bc-csharp/tree/HEAD/fips) directory were last retrieved on 2025-06-19 and are available in the [`fips_original_source`](https://github.com/christopher-conley/bc-csharp/tree/HEAD/fips_original_source) directory.
+
+Please note that the FIPS version is a separate code base and separate assembly from the non-FIPS version, and it has several incompatibilities with the non-FIPS version. The FIPS version is designed to meet the requirements of the Federal Information Processing Standards (FIPS) as defined and established by the National Institute of Standards and Technology ([NIST](https://www.nist.gov)) in the publication "Security Requirements for Cryptographic Modules", detailed in [FIPS 140-2](https://csrc.nist.gov/pubs/fips/140-2/upd2/final) and [FIPS 140-3](https://csrc.nist.gov/pubs/fips/140-3/final). Although usable anywhere, it is intended for use in environments that require FIPS compliance. If you don't know what FIPS is, you probably don't need this.
+
+---
+## Original README is as follows:
 
 The Bouncy Castle Cryptography library is a .NET implementation of cryptographic algorithms and protocols. It was developed by the Legion of the Bouncy Castle, a registered Australian Charity, with a little help! The Legion, and the latest goings on with this package, can be found at [https://www.bouncycastle.org](https://www.bouncycastle.org).
 
@@ -9,7 +21,7 @@ The Legion also gratefully acknowledges the contributions made to this package b
 
 Except where otherwise stated, this software is distributed under a license based on the MIT X Consortium license. To view the license, [see here](https://www.bouncycastle.org/licence.html). This software includes a modified Bzip2 library, which is licensed under the [Apache Software License, Version 2.0](http://www.apache.org/licenses/). 
 
-**Note**: This source tree is not the FIPS version of the APIs - if you are interested in our FIPS version please visit us [here](https://www.bouncycastle.org/fips-csharp) or contact us directly at [office@bouncycastle.org](mailto:office@bouncycastle.org).
+~~**Note**: This source tree is not the FIPS version of the APIs - if you are interested in our FIPS version please visit us [here](https://www.bouncycastle.org/fips-csharp) or contact us directly at [office@bouncycastle.org](mailto:office@bouncycastle.org).~~
 
 ## Installing BouncyCastle
 

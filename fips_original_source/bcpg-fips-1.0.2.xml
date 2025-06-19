@@ -1,0 +1,1052 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>bcpg-fips-1.0.2</name>
+    </assembly>
+    <members>
+        <member name="T:Org.BouncyCastle.Bcpg.ArmoredInputStream">
+            reader for Base64 armored objects - read the headers and then start returning
+            bytes when the data is reached. An IOException is thrown if the CRC check
+            fails.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredInputStream.Decode(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32[])">
+             decode the base 64 encoded input data.
+            
+             @return the offset the data starts in out.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredInputStream.#ctor(System.IO.Stream)">
+             Create a stream for reading a PGP armoured message, parsing up to a header
+             and then reading the data that follows.
+            
+             @param input
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredInputStream.#ctor(System.IO.Stream,System.Boolean)">
+             Create an armoured input stream which will assume the data starts
+             straight away, or parse for headers first depending on the value of
+             hasHeaders.
+            
+             @param input
+             @param hasHeaders true if headers are to be looked for, false otherwise.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredInputStream.IsClearText">
+            @return true if we are inside the clear text section of a PGP
+            signed message.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredInputStream.IsEndOfStream">
+            @return true if the stream is actually at end of file.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredInputStream.GetArmorHeaderLine">
+            Return the armor header line (if there is one)
+            @return the armor header line, null if none present.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredInputStream.GetArmorHeaders">
+            Return the armor headers (the lines after the armor header line),
+            @return an array of armor headers, null if there aren't any.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.ArmoredOutputStream">
+            Basic output stream.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredOutputStream.Encode(System.IO.Stream,System.Int32[],System.Int32)">
+            encode the input data producing a base 64 encoded byte array.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredOutputStream.SetHeader(System.String,System.String)">
+             Set an additional header entry.
+            
+             @param name the name of the header entry.
+             @param v the value of the header entry.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredOutputStream.ResetHeaders">
+            Reset the headers to only contain a Version string.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredOutputStream.BeginClearText(Org.BouncyCastle.Bcpg.HashAlgorithmTag)">
+            Start a clear text signed message.
+            @param hashAlgorithm
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ArmoredOutputStream.Close">
+            <b>Note</b>: Close() does not close the underlying stream. So it is possible to write
+            multiple objects using armoring to a single stream.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Attr.ImageAttrib">
+            <remarks>Basic type for a image attribute packet.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.BcpgInputStream">
+            <remarks>Reader for PGP objects.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.BcpgInputStream.NextPacketTag">
+            <summary>Returns the next packet tag in the stream.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.BcpgInputStream.PartialInputStream">
+            <summary>
+            A stream that overlays our input stream, allowing the user to only read a segment of it.
+            NB: dataLength will be negative if the segment length is in the upper range above 2**31.
+            </summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.BcpgObject">
+            <remarks>Base class for a PGP object.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.BcpgOutputStream">
+            <remarks>Basic output stream.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.BcpgOutputStream.#ctor(System.IO.Stream)">
+            <summary>Create a stream representing a general packet.</summary>
+            <param name="outStr">Output stream to write to.</param>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.BcpgOutputStream.#ctor(System.IO.Stream,Org.BouncyCastle.Bcpg.PacketTag)">
+            <summary>Create a stream representing an old style partial object.</summary>
+            <param name="outStr">Output stream to write to.</param>
+            <param name="tag">The packet tag for the object.</param>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.BcpgOutputStream.#ctor(System.IO.Stream,Org.BouncyCastle.Bcpg.PacketTag,System.Int64,System.Boolean)">
+            <summary>Create a stream representing a general packet.</summary>
+            <param name="outStr">Output stream to write to.</param>
+            <param name="tag">Packet tag.</param>
+            <param name="length">Size of chunks making up the packet.</param>
+            <param name="oldFormat">If true, the header is written out in old format.</param>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.BcpgOutputStream.#ctor(System.IO.Stream,Org.BouncyCastle.Bcpg.PacketTag,System.Int64)">
+            <summary>Create a new style partial input stream buffered into chunks.</summary>
+            <param name="outStr">Output stream to write to.</param>
+            <param name="tag">Packet tag.</param>
+            <param name="length">Size of chunks making up the packet.</param>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.BcpgOutputStream.#ctor(System.IO.Stream,Org.BouncyCastle.Bcpg.PacketTag,System.Byte[])">
+            <summary>Create a new style partial input stream buffered into chunks.</summary>
+            <param name="outStr">Output stream to write to.</param>
+            <param name="tag">Packet tag.</param>
+            <param name="buffer">Buffer to use for collecting chunks.</param>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.BcpgOutputStream.Flush">
+            <summary>Flush the underlying stream.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.BcpgOutputStream.Finish">
+            <summary>Finish writing out the current packet without closing the underlying stream.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.CompressedDataPacket">
+            <remarks>Generic compressed data object.</remarks>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.CompressedDataPacket.Algorithm">
+            <summary>The algorithm tag value.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.CompressionAlgorithmTag">
+            <remarks>Basic tags for compression algorithms.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.ContainedPacket">
+            <remarks>Basic type for a PGP packet.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.DsaPublicBcpgKey">
+            <remarks>Base class for a DSA public key.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.DsaPublicBcpgKey.#ctor(Org.BouncyCastle.Bcpg.BcpgInputStream)">
+            <param name="bcpgIn">The stream to read the packet from.</param>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.DsaPublicBcpgKey.Format">
+            <summary>The format, as a string, always "PGP".</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.DsaPublicBcpgKey.GetEncoded">
+            <summary>Return the standard PGP encoding of the key.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.DsaSecretBcpgKey">
+            <remarks>Base class for a DSA secret key.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.DsaSecretBcpgKey.#ctor(Org.BouncyCastle.Bcpg.BcpgInputStream)">
+            @param in
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.DsaSecretBcpgKey.Format">
+            <summary>The format, as a string, always "PGP".</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.DsaSecretBcpgKey.GetEncoded">
+            <summary>Return the standard PGP encoding of the key.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.DsaSecretBcpgKey.X">
+            @return x
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.ECDHPublicBcpgKey">
+            <remarks>Base class for an ECDH Public Key.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ECDHPublicBcpgKey.#ctor(Org.BouncyCastle.Bcpg.BcpgInputStream)">
+            <param name="bcpgIn">The stream to read the packet from.</param>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.ECDsaPublicBcpgKey">
+            <remarks>Base class for an ECDSA Public Key.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ECDsaPublicBcpgKey.#ctor(Org.BouncyCastle.Bcpg.BcpgInputStream)">
+            <param name="bcpgIn">The stream to read the packet from.</param>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.ECPublicBcpgKey">
+            <remarks>Base class for an EC Public Key.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ECPublicBcpgKey.#ctor(Org.BouncyCastle.Bcpg.BcpgInputStream)">
+            <param name="bcpgIn">The stream to read the packet from.</param>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.ECPublicBcpgKey.Format">
+            <summary>The format, as a string, always "PGP".</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ECPublicBcpgKey.GetEncoded">
+            <summary>Return the standard PGP encoding of the key.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.ECSecretBcpgKey">
+            <remarks>Base class for an EC Secret Key.</remarks>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.ECSecretBcpgKey.Format">
+            <summary>The format, as a string, always "PGP".</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ECSecretBcpgKey.GetEncoded">
+            <summary>Return the standard PGP encoding of the key.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.ElGamalPublicBcpgKey">
+            <remarks>Base class for an ElGamal public key.</remarks>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.ElGamalPublicBcpgKey.Format">
+            <summary>The format, as a string, always "PGP".</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ElGamalPublicBcpgKey.GetEncoded">
+            <summary>Return the standard PGP encoding of the key.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.ElGamalSecretBcpgKey">
+            <remarks>Base class for an ElGamal secret key.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ElGamalSecretBcpgKey.#ctor(Org.BouncyCastle.Bcpg.BcpgInputStream)">
+            @param in
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ElGamalSecretBcpgKey.#ctor(Org.BouncyCastle.Math.BigInteger)">
+            @param x
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.ElGamalSecretBcpgKey.Format">
+            <summary>The format, as a string, always "PGP".</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.ElGamalSecretBcpgKey.GetEncoded">
+            <summary>Return the standard PGP encoding of the key.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.ExperimentalPacket">
+            <remarks>Basic packet for an experimental packet.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.HashAlgorithmTag">
+            <remarks>Basic tags for hash algorithms.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.IBcpgKey">
+            <remarks>Base interface for a PGP key.</remarks>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.IBcpgKey.Format">
+            <summary>
+            The base format for this key - in the case of the symmetric keys it will generally
+            be raw indicating that the key is just a straight byte representation, for an asymmetric
+            key the format will be PGP, indicating the key is a string of MPIs encoded in PGP format.
+            </summary>
+            <returns>"RAW" or "PGP".</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.InputStreamPacket.GetInputStream">
+            <summary>Note: you can only read from this once...</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.LiteralDataPacket">
+            <remarks>Generic literal data packet.</remarks>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.LiteralDataPacket.Format">
+            <summary>The format tag value.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.LiteralDataPacket.ModificationTime">
+            <summary>The modification time of the file in milli-seconds (since Jan 1, 1970 UTC)</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.MarkerPacket">
+            <remarks>Basic type for a marker packet.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.ModDetectionCodePacket">
+            <remarks>Basic packet for a modification detection code packet.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.MPInteger">
+            <remarks>A multiple precision integer</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.OnePassSignaturePacket">
+            <remarks>Generic signature object</remarks>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.OnePassSignaturePacket.KeyAlgorithm">
+            <summary>The encryption algorithm tag.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.OnePassSignaturePacket.HashAlgorithm">
+            <summary>The hash algorithm tag.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.PacketTag">
+            <remarks>Basic PGP packet tag types.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.PublicKeyAlgorithmTag">
+            <remarks>Public Key Algorithm tag numbers.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.PublicKeyEncSessionPacket">
+            <remarks>Basic packet for a PGP public key.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.PublicKeyPacket">
+            <remarks>Basic packet for a PGP public key.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.PublicKeyPacket.#ctor(Org.BouncyCastle.Bcpg.PublicKeyAlgorithmTag,System.DateTime,Org.BouncyCastle.Bcpg.IBcpgKey)">
+            <summary>Construct a version 4 public key packet.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.PublicSubkeyPacket">
+            <remarks>Basic packet for a PGP public subkey</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.PublicSubkeyPacket.#ctor(Org.BouncyCastle.Bcpg.PublicKeyAlgorithmTag,System.DateTime,Org.BouncyCastle.Bcpg.IBcpgKey)">
+            <summary>Construct a version 4 public subkey packet.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.RsaPublicBcpgKey">
+            <remarks>Base class for an RSA public key.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.RsaPublicBcpgKey.#ctor(Org.BouncyCastle.Bcpg.BcpgInputStream)">
+            <summary>Construct an RSA public key from the passed in stream.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.RsaPublicBcpgKey.#ctor(Org.BouncyCastle.Math.BigInteger,Org.BouncyCastle.Math.BigInteger)">
+            <param name="n">The modulus.</param>
+            <param name="e">The public exponent.</param>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.RsaPublicBcpgKey.Format">
+            <summary>The format, as a string, always "PGP".</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.RsaPublicBcpgKey.GetEncoded">
+            <summary>Return the standard PGP encoding of the key.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.RsaSecretBcpgKey">
+            <remarks>Base class for an RSA secret (or priate) key.</remarks>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.RsaSecretBcpgKey.Format">
+            <summary>The format, as a string, always "PGP".</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.RsaSecretBcpgKey.GetEncoded">
+            <summary>Return the standard PGP encoding of the key.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.S2k">
+            <remarks>The string to key specifier class.</remarks>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.S2k.HashAlgorithm">
+            <summary>The hash algorithm.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.S2k.GetIV">
+            <summary>The IV for the key generation algorithm.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.S2k.IterationCount">
+            <summary>The iteration count</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.S2k.ProtectionMode">
+            <summary>The protection mode - only if GnuDummyS2K</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.SecretKeyPacket">
+            <remarks>Basic packet for a PGP secret key.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.SecretSubkeyPacket">
+            <remarks>Basic packet for a PGP secret key.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.SignaturePacket">
+            <remarks>Generic signature packet.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.SignaturePacket.#ctor(System.Int32,System.Int64,Org.BouncyCastle.Bcpg.PublicKeyAlgorithmTag,Org.BouncyCastle.Bcpg.HashAlgorithmTag,Org.BouncyCastle.Bcpg.SignatureSubpacket[],Org.BouncyCastle.Bcpg.SignatureSubpacket[],System.Byte[],Org.BouncyCastle.Bcpg.MPInteger[])">
+             Generate a version 4 signature packet.
+            
+             @param signatureType
+             @param keyAlgorithm
+             @param hashAlgorithm
+             @param hashedData
+             @param unhashedData
+             @param fingerprint
+             @param signature
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.SignaturePacket.#ctor(System.Int32,System.Int32,System.Int64,Org.BouncyCastle.Bcpg.PublicKeyAlgorithmTag,Org.BouncyCastle.Bcpg.HashAlgorithmTag,System.Int64,System.Byte[],Org.BouncyCastle.Bcpg.MPInteger[])">
+             Generate a version 2/3 signature packet.
+            
+             @param signatureType
+             @param keyAlgorithm
+             @param hashAlgorithm
+             @param fingerprint
+             @param signature
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.SignaturePacket.KeyId">
+            return the keyId
+            @return the keyId that created the signature.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.SignaturePacket.GetSignatureTrailer">
+             return the signature trailer that must be included with the data
+             to reconstruct the signature
+            
+             @return byte[]
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.SignaturePacket.GetSignature">
+            		* return the signature as a set of integers - note this is normalised to be the
+                    * ASN.1 encoding of what appears in the signature packet.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.SignaturePacket.GetSignatureBytes">
+            Return the byte encoding of the signature section.
+            @return uninterpreted signature bytes.
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.SignaturePacket.CreationTime">
+            <summary>Return the creation time in milliseconds since 1 Jan., 1970 UTC.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.SignatureSubpacket">
+            <remarks>Basic type for a PGP Signature sub-packet.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.SignatureSubpacket.GetData">
+            <summary>Return the generic data making up the packet.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.SignatureSubpacketsParser">
+            reader for signature sub-packets
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.SignatureSubpacketTag">
+            Basic PGP signature sub-packet tag types.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.EmbeddedSignature">
+            Packet embedded signature
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.Exportable">
+            packet giving signature creation time.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.Features">
+            packet giving signature expiration time.
+        </member>
+        <member name="F:Org.BouncyCastle.Bcpg.Sig.Features.FEATURE_MODIFICATION_DETECTION">
+            Identifier for the modification detection feature 
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.Sig.Features.SupportsModificationDetection">
+            Returns if modification detection is supported.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.Sig.Features.SupportsFeature(System.Byte)">
+            Returns if a particular feature is supported.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.Sig.Features.SetSupportsFeature(System.Byte,System.Boolean)">
+            Sets support for a particular feature.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.IssuerKeyId">
+            packet giving signature creation time.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.KeyExpirationTime">
+            packet giving time after creation at which the key expires.
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.Sig.KeyExpirationTime.Time">
+             Return the number of seconds after creation time a key is valid for.
+            
+             @return second count for key validity.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.KeyFlags">
+            Packet holding the key flag values.
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.Sig.KeyFlags.Flags">
+            <summary>
+            Return the flag values contained in the first 4 octets (note: at the moment
+            the standard only uses the first one).
+            </summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.NotationData">
+            Class provided a NotationData object according to
+            RFC2440, Chapter 5.2.3.15. Notation Data
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.PreferredAlgorithms">
+            packet giving signature creation time.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.PrimaryUserId">
+            packet giving whether or not the signature is signed using the primary user ID for the key.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.Revocable">
+            packet giving whether or not is revocable.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.SignatureCreationTime">
+            packet giving signature creation time.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.SignatureExpirationTime">
+            packet giving signature expiration time.
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.Sig.SignatureExpirationTime.Time">
+            return time in seconds before signature expires after creation time.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.SignerUserId">
+            packet giving the User ID of the signer.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.Sig.TrustSignature">
+            packet giving trust.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.RevocationKey">
+            <summary>
+            Represents revocation key OpenPGP signature sub packet.
+            </summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.RevocationReason">
+            <summary>
+            Represents revocation reason OpenPGP signature sub packet.
+            </summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.SymmetricEncDataPacket">
+            <remarks>Basic type for a symmetric key encrypted packet.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.SymmetricKeyAlgorithmTag">
+            Basic tags for symmetric key algorithms
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.SymmetricKeyEncSessionPacket">
+            Basic type for a symmetric encrypted session key packet
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.SymmetricKeyEncSessionPacket.EncAlgorithm">
+            @return int
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.SymmetricKeyEncSessionPacket.S2k">
+            @return S2k
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.SymmetricKeyEncSessionPacket.GetSecKeyData">
+            @return byte[]
+        </member>
+        <member name="P:Org.BouncyCastle.Bcpg.SymmetricKeyEncSessionPacket.Version">
+            @return int
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.TrustPacket">
+            <summary>Basic type for a trust packet.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.UserAttributePacket">
+            Basic type for a user attribute packet.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.UserAttributeSubpacket">
+            Basic type for a user attribute sub-packet.
+        </member>
+        <member name="M:Org.BouncyCastle.Bcpg.UserAttributeSubpacket.GetData">
+            return the generic data making up the packet.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.UserAttributeSubpacketsParser">
+            reader for user attribute sub-packets
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.UserAttributeSubpacketTag">
+            Basic PGP user attribute sub-packet tag types.
+        </member>
+        <member name="T:Org.BouncyCastle.Bcpg.UserIdPacket">
+            Basic type for a user ID packet.
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.Operators.GeneralDigest">
+            base implementation of MD4 family style digest as outlined in
+            "Handbook of Applied Cryptography", pages 344 - 347.
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.Operators.MD5Digest">
+            implementation of MD5 as outlined in "Handbook of Applied Cryptography", pages 346 - 347.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.Operators.MD5Digest.Reset">
+            reset the chaining variables to the IV values.
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpException">
+            <remarks>Generic exception class for PGP encoding/decoding problems.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpKeyPair">
+            <remarks>
+            General class to handle JCA key pairs and convert them into OpenPGP ones.
+            <p>
+            A word for the unwary, the KeyId for an OpenPGP public key is calculated from
+            a hash that includes the time of creation, if you pass a different date to the
+            constructor below with the same public private key pair the KeyIs will not be the
+            same as for previous generations of the key, so ideally you only want to do
+            this once.
+            </p>
+            </remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpKeyPair.#ctor(Org.BouncyCastle.OpenPgp.PgpPublicKey,Org.BouncyCastle.OpenPgp.PgpPrivateKey)">
+            <summary>Create a key pair from a PgpPrivateKey and a PgpPublicKey.</summary>
+            <param name="pub">The public key.</param>
+            <param name="priv">The private key.</param>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpKeyPair.KeyId">
+            <summary>The keyId associated with this key pair.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpKeyValidationException">
+            <remarks>
+            Thrown if the key checksum is invalid.
+            </remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpLiteralData">
+            <summary>Class for processing literal data objects.</summary>
+        </member>
+        <member name="F:Org.BouncyCastle.OpenPgp.PgpLiteralData.Console">
+            <summary>The special name indicating a "for your eyes only" packet.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpLiteralData.Format">
+            <summary>The format of the data stream - Binary or Text</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpLiteralData.FileName">
+            <summary>The file name that's associated with the data stream.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpLiteralData.GetRawFileName">
+            Return the file name as an unintrepreted byte array.
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpLiteralData.ModificationTime">
+            <summary>The modification time for the file.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpLiteralData.GetInputStream">
+            <summary>The raw input stream for the data stream.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpLiteralData.GetDataStream">
+            <summary>The input stream representing the data stream.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpLiteralDataGenerator">
+            <remarks>Class for producing literal data packets.</remarks>
+        </member>
+        <member name="F:Org.BouncyCastle.OpenPgp.PgpLiteralDataGenerator.Console">
+            <summary>The special name indicating a "for your eyes only" packet.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpLiteralDataGenerator.#ctor(System.Boolean)">
+            <summary>
+            Generates literal data objects in the old format.
+            This is important if you need compatibility with PGP 2.6.x.
+            </summary>
+            <param name="oldFormat">If true, uses old format.</param>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpLiteralDataGenerator.Open(System.IO.Stream,System.Char,System.String,System.Int64,System.DateTime)">
+            <summary>
+            <p>
+            Open a literal data packet, returning a stream to store the data inside the packet.
+            </p>
+            <p>
+            The stream created can be closed off by either calling Close()
+            on the stream or Close() on the generator. Closing the returned
+            stream does not close off the Stream parameter <c>outStr</c>.
+            </p>
+            </summary>
+            <param name="outStr">The stream we want the packet in.</param>
+            <param name="format">The format we are using.</param>
+            <param name="name">The name of the 'file'.</param>
+            <param name="length">The length of the data we will write.</param>
+            <param name="modificationTime">The time of last modification we want stored.</param>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpLiteralDataGenerator.Open(System.IO.Stream,System.Char,System.String,System.DateTime,System.Byte[])">
+            <summary>
+            <p>
+            Open a literal data packet, returning a stream to store the data inside the packet,
+            as an indefinite length stream. The stream is written out as a series of partial
+            packets with a chunk size determined by the size of the passed in buffer.
+            </p>
+            <p>
+            The stream created can be closed off by either calling Close()
+            on the stream or Close() on the generator. Closing the returned
+            stream does not close off the Stream parameter <c>outStr</c>.
+            </p>
+            <p>
+            <b>Note</b>: if the buffer is not a power of 2 in length only the largest power of 2
+            bytes worth of the buffer will be used.</p>
+            </summary>
+            <param name="outStr">The stream we want the packet in.</param>
+            <param name="format">The format we are using.</param>
+            <param name="name">The name of the 'file'.</param>
+            <param name="modificationTime">The time of last modification we want stored.</param>
+            <param name="buffer">The buffer to use for collecting data to put into chunks.</param>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpLiteralDataGenerator.Open(System.IO.Stream,System.Char,System.IO.FileInfo)">
+            <summary>
+            <p>
+            Open a literal data packet for the passed in <c>FileInfo</c> object, returning
+            an output stream for saving the file contents.
+            </p>
+            <p>
+            The stream created can be closed off by either calling Close()
+            on the stream or Close() on the generator. Closing the returned
+            stream does not close off the Stream parameter <c>outStr</c>.
+            </p>
+            </summary>
+            <param name="outStr">The stream we want the packet in.</param>
+            <param name="format">The format we are using.</param>
+            <param name="file">The <c>FileInfo</c> object containg the packet details.</param>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpLiteralDataGenerator.Close">
+            <summary>
+            Close the literal data packet - this is equivalent to calling Close()
+            on the stream returned by the Open() method.
+            </summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpOnePassSignature.InitVerify(Org.BouncyCastle.Crypto.IVerifierFactoryProvider{Org.BouncyCastle.OpenPgp.Operators.Parameters.PgpSignatureTypeIdentifier})">
+             Initialise the signature object for verification.
+            
+             @param verifierBuilderProvider   provider for a content verifier builder for the signature type of interest.
+             @param pubKey  the public key to use for verification
+             @throws PgpException if there's an issue with creating the verifier.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpOnePassSignature.Verify(Org.BouncyCastle.OpenPgp.PgpSignature)">
+            Verify the calculated signature against the passed in PgpSignature.
+            
+            @param pgpSig
+            @return boolean
+            @throws PgpException
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpPrivateKey">
+            <remarks>General class to contain a private key for use with other OpenPGP objects.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPrivateKey.#ctor(System.Int64,Org.BouncyCastle.Bcpg.PublicKeyPacket,Org.BouncyCastle.Bcpg.IBcpgKey)">
+            <summary>
+            Create a PgpPrivateKey from a keyID, the associated public data packet, and a regular private key.
+            </summary>
+            <param name="keyID">ID of the corresponding public key.</param>
+            <param name="publicKeyPacket">the public key data packet to be associated with this private key.</param>
+            <param name="privateKey">the private key packet to be associated with this private key.</param>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpPrivateKey.KeyId">
+            <summary>The keyId associated with the contained private key.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpPrivateKey.PublicKeyPacket">
+            <summary>The public key packet associated with this private key, if available.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpPrivateKey.Key">
+            <summary>The contained private key.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpPublicKey">
+            <remarks>General class to handle a PGP public key object.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.#ctor(Org.BouncyCastle.Bcpg.PublicKeyPacket,Org.BouncyCastle.OpenPgp.IKeyFingerPrintCalculator)">
+             Create a PGP public key from a packet descriptor using the passed in fingerPrintCalculator to do calculate
+             the fingerprint and keyID.
+            
+             @param publicKeyPacket  packet describing the public key.
+             @param fingerPrintCalculator calculator providing the digest support ot create the key fingerprint.
+             @throws PGPException  if the packet is faulty, or the required calculations fail.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.#ctor(Org.BouncyCastle.Bcpg.PublicKeyPacket,Org.BouncyCastle.Bcpg.TrustPacket,System.Collections.Generic.IList{Org.BouncyCastle.OpenPgp.PgpSignature},Org.BouncyCastle.OpenPgp.IKeyFingerPrintCalculator)">
+            <summary>Constructor for a sub-key.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.#ctor(Org.BouncyCastle.OpenPgp.PgpPublicKey)">
+            <summary>Copy constructor.</summary>
+            <param name="pubKey">The public key to copy.</param>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpPublicKey.Version">
+            <summary>The version of this key.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpPublicKey.CreationTime">
+            <summary>The creation time of this key.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.GetTrustData">
+            <summary>Return the trust data associated with the public key, if present.</summary>
+            <returns>A byte array with trust data, null otherwise.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.GetValidSeconds">
+            <summary>The number of valid seconds from creation time - zero means no expiry.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpPublicKey.KeyId">
+            <summary>The keyId associated with the public key.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.GetFingerprint">
+            <summary>The fingerprint of the key</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpPublicKey.IsEncryptionKey">
+            <summary>
+            Check if this key has an algorithm type that makes it suitable to use for encryption.
+            </summary>
+            <remarks>
+            Note: with version 4 keys KeyFlags subpackets should also be considered when present for
+            determining the preferred use of the key.
+            </remarks>
+            <returns>
+            <c>true</c> if this key algorithm is suitable for encryption.
+            </returns>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpPublicKey.IsMasterKey">
+            <summary>True, if this is a master key.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpPublicKey.Algorithm">
+            <summary>The algorithm code associated with the public key.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpPublicKey.BitStrength">
+            <summary>The strength of the key in bits.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.GetUserIds">
+            <summary>Allows enumeration of any user IDs associated with the key.</summary>
+            <returns>An <c>IEnumerable</c> of <c>string</c> objects.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.GetUserAttributes">
+            <summary>Allows enumeration of any user attribute vectors associated with the key.</summary>
+            <returns>An <c>IEnumerable</c> of <c>PgpUserAttributeSubpacketVector</c> objects.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.GetSignaturesForId(System.String)">
+            <summary>Allows enumeration of any signatures associated with the passed in id.</summary>
+            <param name="id">The ID to be matched.</param>
+            <returns>An <c>IEnumerable</c> of <c>PgpSignature</c> objects.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.GetSignaturesForUserAttribute(Org.BouncyCastle.OpenPgp.PgpUserAttributeSubpacketVector)">
+            <summary>Allows enumeration of signatures associated with the passed in user attributes.</summary>
+            <param name="userAttributes">The vector of user attributes to be matched.</param>
+            <returns>An <c>IEnumerable</c> of <c>PgpSignature</c> objects.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.GetSignaturesOfType(System.Int32)">
+            <summary>Allows enumeration of signatures of the passed in type that are on this key.</summary>
+            <param name="signatureType">The type of the signature to be returned.</param>
+            <returns>An <c>IEnumerable</c> of <c>PgpSignature</c> objects.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.GetSignatures">
+            <summary>Allows enumeration of all signatures/certifications associated with this key.</summary>
+            <returns>An <c>IEnumerable</c> with all signatures/certifications.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.GetKeySignatures">
+             Return all signatures/certifications directly associated with this key (ie, not to a user id).
+            
+             @return an iterator (possibly empty) with all signatures/certifications.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.IsRevoked">
+            <summary>Check whether this (sub)key has a revocation signature on it.</summary>
+            <returns>True, if this (sub)key has been revoked.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.AddCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey,System.String,Org.BouncyCastle.OpenPgp.PgpSignature)">
+            <summary>Add a certification for an id to the given public key.</summary>
+            <param name="key">The key the certification is to be added to.</param>
+            <param name="id">The ID the certification is associated with.</param>
+            <param name="certification">The new certification.</param>
+            <returns>The re-certified key.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.AddCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey,Org.BouncyCastle.OpenPgp.PgpUserAttributeSubpacketVector,Org.BouncyCastle.OpenPgp.PgpSignature)">
+            <summary>Add a certification for the given UserAttributeSubpackets to the given public key.</summary>
+            <param name="key">The key the certification is to be added to.</param>
+            <param name="userAttributes">The attributes the certification is associated with.</param>
+            <param name="certification">The new certification.</param>
+            <returns>The re-certified key.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.RemoveCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey,Org.BouncyCastle.OpenPgp.PgpUserAttributeSubpacketVector)">
+            <summary>
+            Remove any certifications associated with a user attribute subpacket on a key.
+            </summary>
+            <param name="key">The key the certifications are to be removed from.</param>
+            <param name="userAttributes">The attributes to be removed.</param>
+            <returns>
+            The re-certified key, or null if the user attribute subpacket was not found on the key.
+            </returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.RemoveCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey,System.String)">
+            <summary>Remove any certifications associated with a given ID on a key.</summary>
+            <param name="key">The key the certifications are to be removed from.</param>
+            <param name="id">The ID that is to be removed.</param>
+            <returns>The re-certified key, or null if the ID was not found on the key.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.RemoveCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey,System.String,Org.BouncyCastle.OpenPgp.PgpSignature)">
+            <summary>Remove a certification associated with a given ID on a key.</summary>
+            <param name="key">The key the certifications are to be removed from.</param>
+            <param name="id">The ID that the certfication is to be removed from.</param>
+            <param name="certification">The certfication to be removed.</param>
+            <returns>The re-certified key, or null if the certification was not found.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.RemoveCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey,Org.BouncyCastle.OpenPgp.PgpUserAttributeSubpacketVector,Org.BouncyCastle.OpenPgp.PgpSignature)">
+            <summary>Remove a certification associated with a given user attributes on a key.</summary>
+            <param name="key">The key the certifications are to be removed from.</param>
+            <param name="userAttributes">The user attributes that the certfication is to be removed from.</param>
+            <param name="certification">The certification to be removed.</param>
+            <returns>The re-certified key, or null if the certification was not found.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.AddCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey,Org.BouncyCastle.OpenPgp.PgpSignature)">
+            <summary>Add a revocation or some other key certification to a key.</summary>
+            <param name="key">The key the revocation is to be added to.</param>
+            <param name="certification">The key signature to be added.</param>
+            <returns>The new changed public key object.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpPublicKey.RemoveCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey,Org.BouncyCastle.OpenPgp.PgpSignature)">
+            <summary>Remove a certification from the key.</summary>
+            <param name="key">The key the certifications are to be removed from.</param>
+            <param name="certification">The certfication to be removed.</param>
+            <returns>The modified key, null if the certification was not found.</returns>
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpSecretKey">
+            <remarks>General class to handle a Pgp secret key object.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSecretKey.#ctor(Org.BouncyCastle.OpenPgp.PgpPrivateKey,Org.BouncyCastle.OpenPgp.PgpPublicKey,System.Boolean,Org.BouncyCastle.OpenPgp.IPbeSecretKeyEncryptor)">
+             Construct a PgpSecretKey using the passed in private key and public key. This constructor will not add any
+             certifications but assumes that pubKey already has what is required.
+            
+             @param privKey the private key component.
+             @param pubKey the public key component.
+             @param checksumCalculator a calculator for the private key checksum
+             @param isMasterKey true if the key is a master key, false otherwise.
+             @param keyEncryptor an encryptor for the key if required (null otherwise).
+             @throws PgpException if there is an issue creating the secret key packet.
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSecretKey.IsSigningKey">
+             Return true if this key has an algorithm type that makes it suitable to use for signing.
+             <p/>
+             Note: with version 4 keys KeyFlags subpackets should also be considered when present for
+             determining the preferred use of the key.
+            
+             @return true if this key algorithm is suitable for use with signing.
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSecretKey.IsMasterKey">
+            Return true if this is a master key.
+            @return true if a master key.
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSecretKey.IsPrivateKeyEmpty">
+             Detect if the Secret Key's Private Key is empty or not
+            
+             @return bool whether or not the private key is empty
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSecretKey.KeyEncryptionAlgorithm">
+             return the algorithm the key is encrypted with.
+            
+             @return the algorithm used to encrypt the secret key.
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSecretKey.KeyId">
+            Return the keyID of the public key associated with this key.
+            
+            @return the keyID associated with this key.
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSecretKey.S2kUsage">
+             Return the S2K usage associated with this key.
+            
+             @return the key's S2K usage
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSecretKey.S2k">
+             Return the S2K used to process this key
+            
+             @return the key's S2K, null if one is not present.
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSecretKey.PublicKey">
+            Return the public key associated with this key.
+            
+            @return the public key for this key.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSecretKey.GetUserIDs">
+            Return any userIDs associated with the key.
+            
+            @return an iterator of Strings.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSecretKey.GetUserAttributes">
+            Return any user attribute vectors associated with the key.
+            
+            @return an iterator of PgpUserAttributeSubpacketVector.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSecretKey.ExtractPrivateKey(Org.BouncyCastle.OpenPgp.IPbeSecretKeyDecryptorProvider)">
+             Extract a PgpPrivate key from the SecretKey's encrypted contents.
+            
+             @param decryptorFactory  factory to use to generate a decryptor for the passed in secretKey.
+             @return PgpPrivateKey  the unencrypted private key.
+             @throws PgpException on failure.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSecretKey.CopyWithNewPassword(Org.BouncyCastle.OpenPgp.PgpSecretKey,Org.BouncyCastle.OpenPgp.IPbeSecretKeyDecryptorProvider,Org.BouncyCastle.OpenPgp.IPbeSecretKeyEncryptor)">
+             Return a copy of the passed in secret key, encrypted using a new
+             password and the passed in algorithm.
+            
+             @param key the PgpSecretKey to be copied.
+             @param oldKeyDecryptor the current decryptor based on the current password for key.
+             @param newKeyEncryptor a new encryptor based on a new password for encrypting the secret key material.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSecretKey.ReplacePublicKey(Org.BouncyCastle.OpenPgp.PgpSecretKey,Org.BouncyCastle.OpenPgp.PgpPublicKey)">
+             Replace the passed the public key on the passed in secret key.
+            
+             @param secretKey secret key to change
+             @param publicKey new public key.
+             @return a new secret key.
+             @throws IllegalArgumentException if keyIDs do not match.
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpSignature">
+            <remarks>A PGP signature object.</remarks>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSignature.Version">
+            <summary>The OpenPGP version number for this signature.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSignature.KeyAlgorithm">
+            <summary>The key algorithm associated with this signature.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSignature.HashAlgorithm">
+            <summary>The hash algorithm associated with this signature.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignature.VerifyCertification(Org.BouncyCastle.OpenPgp.PgpUserAttributeSubpacketVector,Org.BouncyCastle.OpenPgp.PgpPublicKey)">
+            <summary>
+            Verify the signature as certifying the passed in public key as associated
+            with the passed in user attributes.
+            </summary>
+            <param name="userAttributes">User attributes the key was stored under.</param>
+            <param name="key">The key to be verified.</param>
+            <returns>True, if the signature matches, false otherwise.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignature.VerifyCertification(System.String,Org.BouncyCastle.OpenPgp.PgpPublicKey)">
+            <summary>
+            Verify the signature as certifying the passed in public key as associated
+            with the passed in ID.
+            </summary>
+            <param name="id">ID the key was stored under.</param>
+            <param name="key">The key to be verified.</param>
+            <returns>True, if the signature matches, false otherwise.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignature.VerifyCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey,Org.BouncyCastle.OpenPgp.PgpPublicKey)">
+            <summary>Verify a certification for the passed in key against the passed in master key.</summary>
+            <param name="masterKey">The key we are verifying against.</param>
+            <param name="pubKey">The key we are verifying.</param>
+            <returns>True, if the certification is valid, false otherwise.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignature.VerifyCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey)">
+            <summary>Verify a key certification, such as revocation, for the passed in key.</summary>
+            <param name="pubKey">The key we are checking.</param>
+            <returns>True, if the certification is valid, false otherwise.</returns>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSignature.KeyId">
+            <summary>The ID of the key that created the signature.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSignature.CreationTime">
+            <summary>The creation time of this signature.</summary>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSignature.HasSubpackets">
+            <summary>
+            Return true if the signature has either hashed or unhashed subpackets.
+            </summary>
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpSignatureGenerator">
+            <remarks>Generator for PGP signatures.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureGenerator.#ctor">
+            <summary>Create a generator for the passed in keyAlgorithm and hashAlgorithm codes.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureGenerator.InitSign(System.Int32,Org.BouncyCastle.Crypto.ISignatureWithDigestFactory{Org.BouncyCastle.OpenPgp.Operators.Parameters.PgpSignatureIdentifier})">
+            <summary>Initialise the generator for signing.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureGenerator.GenerateOnePassVersion(System.Boolean)">
+            <summary>Return the one pass header associated with the current signature.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureGenerator.Generate">
+            <summary>Return a signature object containing the current signature state.</summary>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureGenerator.GenerateCertification(System.String,Org.BouncyCastle.OpenPgp.PgpPublicKey)">
+            <summary>Generate a certification for the passed in ID and key.</summary>
+            <param name="id">The ID we are certifying against the public key.</param>
+            <param name="pubKey">The key we are certifying against the ID.</param>
+            <returns>The certification.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureGenerator.GenerateCertification(Org.BouncyCastle.OpenPgp.PgpUserAttributeSubpacketVector,Org.BouncyCastle.OpenPgp.PgpPublicKey)">
+            <summary>Generate a certification for the passed in userAttributes.</summary>
+            <param name="userAttributes">The ID we are certifying against the public key.</param>
+            <param name="pubKey">The key we are certifying against the ID.</param>
+            <returns>The certification.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureGenerator.GenerateCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey,Org.BouncyCastle.OpenPgp.PgpPublicKey)">
+            <summary>Generate a certification for the passed in key against the passed in master key.</summary>
+            <param name="masterKey">The key we are certifying against.</param>
+            <param name="pubKey">The key we are certifying.</param>
+            <returns>The certification.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureGenerator.GenerateCertification(Org.BouncyCastle.OpenPgp.PgpPublicKey)">
+            <summary>Generate a certification, such as a revocation, for the passed in key.</summary>
+            <param name="pubKey">The key we are certifying.</param>
+            <returns>The certification.</returns>
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpSignatureSubpacketVector">
+            <remarks>Container for a list of signature subpackets.</remarks>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureSubpacketVector.HasSubpacket(Org.BouncyCastle.Bcpg.SignatureSubpacketTag)">
+             Return true if a particular subpacket type exists.
+            
+             @param type type to look for.
+             @return true if present, false otherwise.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureSubpacketVector.GetSubpackets(Org.BouncyCastle.Bcpg.SignatureSubpacketTag)">
+            Return all signature subpackets of the passed in type.
+            @param type subpacket type code
+            @return an array of zero or more matching subpackets.
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureSubpacketVector.GetSignatureExpirationTime">
+            <summary>
+            Return the number of seconds a signature is valid for after its creation date.
+            A value of zero means the signature never expires.
+            </summary>
+            <returns>Seconds a signature is valid for.</returns>
+        </member>
+        <member name="M:Org.BouncyCastle.OpenPgp.PgpSignatureSubpacketVector.GetKeyExpirationTime">
+            <summary>
+            Return the number of seconds a key is valid for after its creation date.
+            A value of zero means the key never expires.
+            </summary>
+            <returns>Seconds a signature is valid for.</returns>
+        </member>
+        <member name="P:Org.BouncyCastle.OpenPgp.PgpSignatureSubpacketVector.Count">
+            <summary>Return the number of packets this vector contains.</summary>
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.PgpUserAttributeSubpacketVector">
+            <remarks>Container for a list of user attribute subpackets.</remarks>
+        </member>
+        <member name="T:Org.BouncyCastle.OpenPgp.SXprUtilities">
+            Utility functions for looking a S-expression keys. This class will move when it finds a better home!
+            <p>
+            Format documented here:
+            http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=agent/keyformat.txt;h=42c4b1f06faf1bbe71ffadc2fee0fad6bec91a97;hb=refs/heads/master
+            </p>
+        </member>
+    </members>
+</doc>
